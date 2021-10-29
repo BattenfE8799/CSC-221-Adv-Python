@@ -4,7 +4,6 @@
 #CSC-221
 
 #note from notes: 
-
 class Calculator: #class header
     """ basic calculator that adds or multiplies  """
 
@@ -15,6 +14,10 @@ class Calculator: #class header
                 
     def add(self, x, y):
         """ adds to numbers given """
+        """
+        >>> Calculator.add(x,2,3)
+        '2 + 3 = 5'
+        """
         z = x + y
         text = str(x) + ' + '
         text += str(y) + ' = '
@@ -24,6 +27,10 @@ class Calculator: #class header
     
     def multiply(self,x,y):
         """ multiplys two numbers given """
+        """
+        >>> Calculator.multiply(x,2,3)
+        '2 * 3 = 6'
+        """
         z = x * y
         text = str(x) + ' * '
         text += str(y) + ' = '
@@ -31,7 +38,16 @@ class Calculator: #class header
         return text
         
 def main():
+
     """ main menu"""
+    """
+    >>>2+3
+    '2 + 3 = 5'
+    
+    >>>2*3
+    '2 * 3 = 6'
+    """
+
     again = 1
     while (again == True):
         equation = input("Enter your addion(+) or multiplication(*) equation. ")
@@ -57,10 +73,11 @@ def main():
             again = True
         elif choice == 'n':
             break
-    
+        
 
 if __name__ == "__main__":
-    main()
+    import doctest
+    doctest.testmod()
 
 
         
