@@ -14,28 +14,50 @@ class Calculator: #class header
         self.y = y
                 
     def add(self, x, y):
-        """ addition """
-        x = input("Enter first number: ")
-        y = input("Enter your second number: " )
+        """ adds to numbers given """
         z = x + y
-        print(x," + ",y," = ",z)
+        text = str(x) + ' + '
+        text += str(y) + ' = '
+        text += str(z)
+        return text
         
     
-    def multiply(self):
-        x = input("Enter first number: ")
-        y = input("Enter your second number: " )
+    def multiply(self,x,y):
+        """ multiplys two numbers given """
         z = x * y
-        print(x," * ",y," = ",z)
+        text = str(x) + ' * '
+        text += str(y) + ' = '
+        text += str(z)
+        return text
         
 def main():
     """ main menu"""
-    print("")
-    equation = input("Enter your addion(+) or multiplication(*) equation.")
-    prob = 
-    if choice == 1:
-        problem.add()
-    else:
-        problem.multiply()
+    again = 1
+    while (again == True):
+        equation = input("Enter your addion(+) or multiplication(*) equation. ")
+        if "+" in equation:
+            prob = equation.split("+")
+            x = int(prob[0])
+            y = int(prob[1])
+            solved = Calculator(x, y)
+            answer = solved.add(x,y)
+            
+        elif "*" in equation:
+            prob = equation.split("*")
+            x = int(prob[0])
+            y = int(prob[1])
+            solved = Calculator(x, y)
+            answer = solved.multiply(x, y)
+        
+        print(answer)
+            
+        
+        choice = input("\nDo you want to do another? ")
+        if choice == 'y':
+            again = True
+        elif choice == 'n':
+            break
+    
 
 if __name__ == "__main__":
     main()
