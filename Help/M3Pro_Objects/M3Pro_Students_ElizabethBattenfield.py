@@ -13,6 +13,16 @@ class students:
         self.lastName = lastName
         self.major = major
         
+    def __str__(self):
+        """ string representation of the student """
+        SPACER = '\t'
+        text = self.idNumber + SPACER
+        text += self.firstName  + SPACER
+        text += self.lastName + SPACER
+        text += self.major  + SPACER
+        
+        return text
+        
 def main():
     
     student1 = students('47899','Susan','Meyers','Accounting')
