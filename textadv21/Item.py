@@ -16,7 +16,7 @@ class Item:
         return self.name + " : " + self.description
         
         
-        
+      
 
 # Test code
 def main():
