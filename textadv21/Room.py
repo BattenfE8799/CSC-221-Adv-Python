@@ -1,7 +1,7 @@
 # CSC 221
-# Text Adventure
-# norrisa
-# 10/1/21
+# M3T1- Text Adventure-5Rooms with descriptions
+# Elizabeth Battenfield
+# 10/18/21
 
 from Item import Item
 from Container import Container
@@ -17,7 +17,7 @@ class Room(Container):
         self.name = name
         self.description = description
         self.exits = exits
-        self.contents = {} # used by container
+        self.contents = [] # First pass at items in rooms
 
     def __str__(self):
         """ contains the name, description, and exits in a human-readable fashion"""
@@ -31,7 +31,9 @@ class Room(Container):
             text += "\n"
         # print items in room, if any
         text += "In this room you see: \n"
-        text += self.listContents()
+        for item in self.contents:
+            #text += self.listContents()
+            text += item.name + " : " + item.description
         return text
 
  #   def __repr__(self):  # we're not using this yet
@@ -55,11 +57,12 @@ class Room(Container):
             
     def addItem(self, item):
         """ used to add an item into a room. """
-        self.add(item)
+        self.contents.append(item)
     
     def removeItem(self, item):
         """ used to remove items from a room. """
-        self.remove(item)
+        if item in self.contents:
+            self.contents.remove(item)
     
 
 
@@ -69,21 +72,45 @@ def main():
     Currently used for testing.
     TODO: uimplement doctests. """
     bedroom = Room( "Bedroom", 
-                   "This is an average bedroom.",
-                   { "North": "Bathroom",
-                     "South": "Living Room"} )
+                   "This is a simple bedroom with a comfy bed.",
+                   { "South": "Living Room"} )
     
-    #print(bedroom)
+    print(bedroom)
     
     livingRoom = Room ( "Living Room",
-                       "A TV, sofa, and game console are here.",
-                       { "North" : "Bedroom" } )
-    #print(livingRoom)
+                       "A simple living room with a couch and TV.",
+                       { "North" : "Bedroom" ,
+                         "South" : "Front Yard",
+                         "East"  : "Kitchen"} )
+    print(livingRoom)
+    
+    frontYard = Room ( "Front Yard",
+                       "A tidy front yard with lots of flowers.",
+                       { "North" : "Living Room" } )
+    print(frontYard)
+    
+    kitchen = Room ( "Kitchen",
+                       "A kitchen themed with roosters...they're everywhere.",
+                       { "North" : "Back Yard",
+                         "East"  : "Living Room"} )
+    print(kitchen)
+    
+    backYard = Room ( "Back Yard",
+                       "A messy back yard, it needs to be mowed.",
+                       { "South" : "Kitchen" } )
+    print(backYard)    
+    
+    
+    
+    
     
     # Place rooms in a dictionary.
     # (Game will handle this in the full version)
     roomDict = { bedroom.name: bedroom, 
-                livingRoom.name: livingRoom}
+                livingRoom.name: livingRoom,
+                frontYard.name: frontYard,
+                kitchen.name: kitchen,
+                backYard.name: backYard}
     # Test out items
     key = Item("key", "It's a bit rusty.")
     sword = Item("sword", "It's very shiny.")
