@@ -6,7 +6,7 @@ class myGame(Game):
         
 # game intro
 # game loading/saving
-
+##get/set
 # Game Start
 # tutorial
 
