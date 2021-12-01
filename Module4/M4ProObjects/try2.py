@@ -14,7 +14,14 @@ class Employee(Person):
         return f'{self.get_firstName()} {self.get_lastName()} {self.get_email()} {self.get_position()} {self.get_salary()} {self.get_full_part_time()}'
     
     def set_email(self):
-        self.__email = self.get_lastName() + "." + self.get_firstName() + "@company.com"
+        """ Error Testing : it works either way
+            # lName = self.get_lastName().lower()
+            # fName = self.get_firstName().lower()
+            # # lName = lName.lower()
+            # # fName = fName.lower()
+            # self.__email = lName + "." + fName + "@company.com"
+        """
+        self.__email = self.get_lastName().lower() + "." + self.get_firstName().lower() + "@company.com"
 
     def set_position(self, position):
         self.position = position
