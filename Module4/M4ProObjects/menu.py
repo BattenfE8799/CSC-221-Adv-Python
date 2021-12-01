@@ -5,7 +5,7 @@ Elizabeth Battenfield
 11/15/2021
 """
 from person import Person
-from person import Employee
+from try2 import Employee
 import sys
 # function defenition module
 
@@ -29,28 +29,25 @@ def menu(): #define menu function
 def enterInfo():
     howMany = int(input("How many employees' information do you want to enter? "))
     alist=[]
-    # with open("employees.txt", "w") as f:
-    #     for item in alist:
-    #         f.write("%s\n" % item)
             
-    # alist.append(f'{"First Name":<10s}{" ":4}{"Last Name":<10s}{" ":4}{"Email(company email)":<10s}{" ":4}{"Position":<10s}{" ":4}{"Full/Part time":<10s}{" ":4}{"Salary":<10s}')
+    alist.append(f'{"First Name":<10s}{" ":4}{"Last Name":<10s}{" ":4}{"Email(company email)":<25s}{" ":8}{"Position":<10s}{" ":4}{"Full/Part time":<10s}{" ":4}{"Salary":<10s}')
     for x in range(howMany):
         fName = input("First Name: ")
         lName = input("Last Name: ")
         position = input("Job Position: ")
         time = input("Full/Part time: ")
         salary = input("Salary: $")
-        email = 'email'
-        employee1 = Employee(fName,lName,email,position,salary,time)
+        employee1 = Employee(fName,lName,'email',position,salary,time)
         Employee.set_email(employee1)
-        print(email)
+        print(employee1)
         email = Employee.get_email(employee1)
         print(email)
-        #alist.append(f'{fName:<10s}{" ":4}{lName:<10s}{" ":4}{email:<10s}{" ":4}{position:<10s}{" ":4}{time:<10s}{" ":4}{salary:<10s}')
-    
+        alist.append(f'{fName:<10s}{" ":4}{lName:<10s}{" ":4}{email:<25s}{" ":8}{position:<10s}{" ":4}{time:<10s}{" ":4}{salary:<10s}')
+        print(len(alist))
+    # \t makes a tab
     with open("employees.txt", "w") as f:
         for item in alist:
-            f.write("%s\n" % item)
+            f.write(item+"\n") 
             
     with open("employees.txt", "r") as f:
         for item in f:
