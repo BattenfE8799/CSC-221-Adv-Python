@@ -64,7 +64,7 @@ class Doors(Items):
     """ doors class that is for doors and locked doors"""
     def __init__(self, name, description, value, weight, carryable, locked):
         super().__init__(name, description, value, weight, carryable)
-        self._locked = locked
+        self._locked = True
         
     def set_locked(self, locked):
         self._locked = locked
@@ -72,13 +72,13 @@ class Doors(Items):
     def get_locked(self):
         return self._locked
     
-    def unlock(self, locked, key):
-        if locked == 0:
+    def unlock(self):
+        if self.get_locked == False:
             return True
-        elif locked != 0:
-            if key == True:
-                self.set_locked(0)
+        elif self.get_locked == True:
+            if 'Key' in Player.Invintory(invintory): """need player and inventory"""
+                self.set_locked = False
                 return True
-        else:
-            print("You have no key for that door. The door remains locked.")
+        elif self.get_locked == False:
+            return False
         
