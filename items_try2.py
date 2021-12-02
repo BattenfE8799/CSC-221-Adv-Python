@@ -82,3 +82,5 @@ class Doors(Items):
         elif self.get_locked == False:
             return False
         
+        
+        
