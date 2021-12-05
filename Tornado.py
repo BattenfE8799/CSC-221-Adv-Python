@@ -117,25 +117,7 @@ class Rooms(Containers):
         super().__init__(iname, idescription)
         self.exits = rexits
         
-    # def __str__(self):
-    #     text = f'{self.name}:\n {self.description}\n'
-    #     exitList = self.exits.keys()
-    #     for direction in exitList:
-    #         text += direction
-    #         text +=': ' + self.exits[direction]
-    #         text += '\n'
-    #     if self.box == {}:
-    #         text += "There's no items here.\"
-    #     else:
-           
-    #     return f'{self.name}:\n {self.description}\n In this room are: {lcontents}\n'
-      
-    # def get_exits(self):
-    #     try:
-    #         for v,k in self.exits:
-    #             print(v,k)
-    #     except:
-            # print("There are no exits.")
+
 
 
 class Player:
