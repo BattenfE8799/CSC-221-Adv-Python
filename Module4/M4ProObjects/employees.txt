@@ -1,2 +1,0 @@
-First Name    Last Name     Email(company email)             Position      Full/Part time    Salary    
-Tom           Smith         smith.tom@company.com            1             1             1         
