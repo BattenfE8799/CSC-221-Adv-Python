@@ -3,8 +3,7 @@
 # norrisa
 # 10/1/21
 
-from Room import Room
-from Player import Player
+import Player
 
 
 """
@@ -38,8 +37,7 @@ class Game:
         """ Initialize object (with no rooms) """
         self.rooms = { } # stored in dictionary
         # Player is currently used to hold current location (loc)
-        self.player = Player() 
-        
+        self.player = Player.Player("Player","You are the player.") 
         self.isPlaying = True
         self.isVerbose = True # auto-look on move
         
@@ -55,10 +53,16 @@ class Game:
         You might for example subclass to use Flask, etc. """
         print(message)
 
-    def setup(self):
-        """ setup(): create a graph of rooms for play. """
-        # you MUST subclass Game and write your own setup()
-        # see MyGame for an example.
+    
+    # def setup(self):
+    #     """ setup(): create a graph of rooms for play. """
+    #     # loader = MyGameLoader()
+    #     # self.rooms = loader.setup()
+        
+    #     # starting location
+    #     self.here = self.rooms["Bedroom"]
+    #     # Let's do a turn 1 look , to orient the player
+    #     self.here.describe()
         
         
 
@@ -73,8 +77,17 @@ class Game:
 
 
     def end(self):
-        """ finish game, inform user of score and turns played. """
-        pass
+        """Ends the game, explaining the  turns played"""
+        self.won()
+        if self.player.partial_win == False:
+            print("You didn't win, the torndao took your family.\n It took you {turns_counted} turns to end the game!")
+        elif self.player.win == False:
+            print("You didn't get everyone to safety! You lose!\n It took you {turns_counted} turns to end the game!")
+        elif self.player.partial_win == True:
+            print("You won...technically...what about the pets?\n It took you {turns_counted} turns to end the game!")
+        elif self.player.win == True:
+            print(f'You Won! Eveyone you love is safe from the tornado! Including your pets!\n It took you {self.turns_counted} turns to end the game!')
+        
     
     def playerAction(self):
         """ Ask user for input, validate it, update the game state. """
@@ -130,14 +143,36 @@ class Game:
         # room, and then add it to the player inventory
         # (which means we need a player inventory)
         print("You try to get the", itemName)
-
-        
-        if self.here.contains(itemName):
-            item = self.here.contents[itemName]
-            self.here.moveItemTo(item, self.player)
+        # self.here.list_contents()
+        # print(itemName)
+        # self.get_item(itemName)
+        if itemName in self.here.contents:
+            self.contents.remove(itemName)
+            self.player.contents.append(itemName)
             print("You pick up the ",itemName,".")
         else:
-            print("You can't see any", itemName, "here.")
+            print("You can't see any", itemName, "here.")        
+        
+    # def give_item(self, item):
+    #     """gives the npc an item"""
+    #     if item in self.player.contents:
+    #         self.contents.append(item)
+    #         self.player.contents.remove(item)
+    #         print("You pick up the ",item,".")
+    #     else:
+    #         print("You can't see any", item, "here.")
+            
+    def get_items(self, item):
+        if item in self.here.contents:
+            self.contents.remove(item)
+            self.player.contents.append(item)
+        
+        # if self.here.contains(itemName):
+        #     item = self.here.contents[itemName]
+        #     self.here.moveItemTo(item, self.player)
+        #     print("You pick up the ",itemName,".")
+        # else:
+        #     print("You can't see any", itemName, "here.")
         
             
             
@@ -167,9 +202,9 @@ class Game:
         self.player.loc = room
 
 def main():
+    print("Starting game -- enter your command.")
     game = Game()
     game.setup()
-    print("Starting game -- enter command.")
     game.loop()
     game.end()
 

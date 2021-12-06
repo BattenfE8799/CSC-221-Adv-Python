@@ -3,8 +3,8 @@
 # Elizabeth Battenfield
 # 10/18/21
 
-from Item import Item
 from Container import Container
+import Item
 
 class Room(Container):
     """
@@ -14,26 +14,31 @@ class Room(Container):
 
         
     def __init__(self, name, description, exits):
-        self.name = name
-        self.description = description
-        self.exits = exits
-        self.contents = [] # First pass at items in rooms
+        super().__init__(name, description)
+        self.exits = exits # First pass at items in rooms
 
     def __str__(self):
         """ contains the name, description, and exits in a human-readable fashion"""
-        text = self.name + "\n"
-        text += self.description + "\n"
-        # append all exits
+        #adds name and description
+        
+        # text = '\n'+ self.name + ":" + "\n"
+        # text += self.description + "\n\n" + "Exits: \n"
+        text = f'\n{self.name}:\n{self.description}\n\nExits from room:\n'
+        #adds exits
         exitList = self.exits.keys() # this gives us a list of all directions ipresent in exits
         for direction in exitList:
             text += direction                     # North, South, etc. 
             text += ": " + self.exits[direction]  # prints in format "North: Living Room", etc.
             text += "\n"
-        # print items in room, if any
-        text += "In this room you see: \n"
-        for item in self.contents:
-            #text += self.listContents()
-            text += item.name + " : " + item.description
+        # adds items in room if there are any
+        text += "\nIn this room are: \n"
+        # f'{fName:<10s}{" ":4}{lName:<10s}
+        if len(self.contents) == 0:
+            text += "Nothing you need in here."
+        else:
+            listcontents = self.list_contents()
+            text += listcontents
+            
         return text
 
  #   def __repr__(self):  # we're not using this yet
@@ -62,15 +67,15 @@ class Room(Container):
     def removeItem(self, item):
         """ used to remove items from a room. """
         if item in self.contents:
-            self.contents.remove(item)
+            self.remove(item)
     
 
 
 
 def main():
-    """
-    Currently used for testing.
-    TODO: uimplement doctests. """
+
+    #Currently used for testing.
+    #TODO: uimplement doctests. 
     bedroom = Room( "Bedroom", 
                    "This is a simple bedroom with a comfy bed.",
                    { "South": "Living Room"} )
@@ -112,8 +117,8 @@ def main():
                 kitchen.name: kitchen,
                 backYard.name: backYard}
     # Test out items
-    key = Item("key", "It's a bit rusty.")
-    sword = Item("sword", "It's very shiny.")
+    key = Item.Item("key", "It's a bit rusty.")
+    sword = Item.Item("sword", "It's very shiny.")
     bedroom.addItem(key)
     livingRoom.addItem(sword)
     #print(loc.contents) # just dump the list
