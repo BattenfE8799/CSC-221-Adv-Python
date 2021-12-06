@@ -25,6 +25,7 @@ class Room(Container):
         # text += self.description + "\n\n" + "Exits: \n"
         text = f'\n{self.name}:\n{self.description}\n\nExits from room:\n'
         #adds exits
+        # text = ''
         exitList = self.exits.keys() # this gives us a list of all directions ipresent in exits
         for direction in exitList:
             text += direction                     # North, South, etc. 

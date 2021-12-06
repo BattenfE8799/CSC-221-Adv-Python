@@ -3,8 +3,7 @@
 # norrisa
 # 10/1/21
 
-import Player
-
+from Player import Player
 
 """
 Version history:
@@ -35,11 +34,12 @@ class Game:
 
     def __init__(self):
         """ Initialize object (with no rooms) """
-        self.rooms = { } # stored in dictionary
+        self.rooms = {} # stored in dictionary
         # Player is currently used to hold current location (loc)
-        self.player = Player.Player("Player","You are the player.") 
+        self.player = Player("Player","You are the player.") 
         self.isPlaying = True
         self.isVerbose = True # auto-look on move
+        self.end_game = False
         
 
     def __str__(self):
@@ -68,26 +68,39 @@ class Game:
 
     def loop(self):
         """ loop(): the main game loop.
-        Continues until the user quits. """
-        self.isPlaying = True
-        while self.isPlaying:
+            Continues until the user quits. 
+        """
+        
+        player = self.player
+        while player.is_alive == True:
+            print(player.loc.name)
+            if player.loc == rooms[shelter]:
+                return "END"
             self.playerAction()
+            
         print("Game over, thanks for playing")
         
 
-
-    def end(self):
-        """Ends the game, explaining the  turns played"""
-        self.won()
-        if self.player.partial_win == False:
-            print("You didn't win, the torndao took your family.\n It took you {turns_counted} turns to end the game!")
-        elif self.player.win == False:
-            print("You didn't get everyone to safety! You lose!\n It took you {turns_counted} turns to end the game!")
-        elif self.player.partial_win == True:
-            print("You won...technically...what about the pets?\n It took you {turns_counted} turns to end the game!")
-        elif self.player.win == True:
-            print(f'You Won! Eveyone you love is safe from the tornado! Including your pets!\n It took you {self.turns_counted} turns to end the game!')
+    # def end_game(self):
+    #     """ends the game"""
+    #     if self.player.loc == ["shelter"]: # and self.player.contents('key'):
+    #         self.isPlaying = False
         
+    def end(self):
+        """Ending the game, explaining the  turns played"""
+        # if self.player.loc == 'shelter' and self.player.contents('key'):
+        #     self.end_game = True
+            
+        #     self.won()
+        #     if self.player.partial_win == False:
+        #         print("You didn't win, the torndao took your family.\n It took you {turns_counted} turns to end the game!")
+        #     elif self.player.win == False:
+        #         print("You didn't get everyone to safety! You lose!\n It took you {turns_counted} turns to end the game!")
+        #     elif self.player.partial_win == True:
+        #         print("You won...technically...what about the pets?\n It took you {turns_counted} turns to end the game!")
+        #     elif self.player.win == True:
+        #         print(f'You Won! Eveyone you love is safe from the tornado! Including your pets!\n It took you {self.turns_counted} turns to end the game!')
+        pass
     
     def playerAction(self):
         """ Ask user for input, validate it, update the game state. """
@@ -138,41 +151,20 @@ class Game:
         """ remove the item from the room (if it's there)
         and place it in player inventory.
         """
-        # TODO: actually do this
-        # We'll need to remove the item from the current
-        # room, and then add it to the player inventory
-        # (which means we need a player inventory)
-        print("You try to get the", itemName)
-        # self.here.list_contents()
-        # print(itemName)
-        # self.get_item(itemName)
-        if itemName in self.here.contents:
-            self.contents.remove(itemName)
-            self.player.contents.append(itemName)
-            print("You pick up the ",itemName,".")
-        else:
-            print("You can't see any", itemName, "here.")        
-        
-    # def give_item(self, item):
-    #     """gives the npc an item"""
-    #     if item in self.player.contents:
-    #         self.contents.append(item)
-    #         self.player.contents.remove(item)
-    #         print("You pick up the ",item,".")
-    #     else:
-    #         print("You can't see any", item, "here.")
-            
-    def get_items(self, item):
-        if item in self.here.contents:
-            self.contents.remove(item)
+        print (f'You try to get the {itemName}.')
+
+        item = None
+        for thing in self.here.contents:
+            if thing.name == itemName:
+                item = thing
+        if item != None:    
+            self.here.contents.remove(item)
             self.player.contents.append(item)
+            # print(self.player.contents)
+            print(f'You pickup the {itemName}.')
+        else:
+            print(f'You cant see any {itemName} here.')        
         
-        # if self.here.contains(itemName):
-        #     item = self.here.contents[itemName]
-        #     self.here.moveItemTo(item, self.player)
-        #     print("You pick up the ",itemName,".")
-        # else:
-        #     print("You can't see any", itemName, "here.")
         
             
             
@@ -180,17 +172,24 @@ class Game:
         
         
     def commandDrop(self, itemName):
-        """ remove the item from player inventory
-        (if it's there) and add it to the room. 
+        """ 
+            remove the item from player inventory
+            (if it's there) and add it to the room. 
         """
-        print("You try to drop the", itemName)
         
-        if self.player.contains(itemName):
-            item = self.player.contents[itemName]
-            self.player.moveItemTo(item, self.here)
-            print("You drop the", itemName,".")
+        print("You try to drop the", itemName)
+        item = None
+        for thing in self.player.contents:
+            if thing.name == itemName:
+                item = thing
+                
+        if item != None:    
+            self.here.contents.append(item), self.player.contents.remove(item)
+            print (f'You drop the {itemName}.')
+            
         else:
-            print("You don't have a", itemName, "to drop!")
+            print(f'You dont have a {itemName} to drop!')  
+
 
     # Helper functions -- not necessary, but useful
     @property

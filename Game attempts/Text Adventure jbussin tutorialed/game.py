@@ -8,7 +8,8 @@ def play():
     world.load_tiles() #loads the world tiles from file
     player = Player() #creates a new player object
     room = world.tile_exists(player.location_x, player.location_y)
-    print(room.intro_text())
+    text = room.intro_text()
+    print(text)
     
     while player.is_alive() and not player.victory:
         room = world.world.tile_exists(player.__location_x, player.__location_y) # room object if room exists, this is the players location

@@ -13,6 +13,7 @@ class Player(Container):
         self.contents = [] # because we're also a container
         self.win = False
         self.partial_win = False
+        self.is_alive = True
         
     def __str__(self):
         itemlist = []

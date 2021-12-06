@@ -20,10 +20,25 @@ class MyGame(Game):
         self.rooms = loader.setup()
         
         # starting location
-        self.here = self.rooms["Bedroom"]
+        self.here = self.rooms["Back Yard"]
         # Let's do a turn 1 look , to orient the player
+        # print("before describe")
         self.here.describe()
+        # print("after decribe")
+
+    def loop(self):
+        """ loop(): the main game loop.
+            Continues until the user quits. 
+        """
         
+        player = self.player
+        while player.is_alive == True:
+            print(player.loc.name)
+            if player.loc == self.rooms["Back Yard"]:
+                break
+            self.playerAction()
+            
+        print("Game over, thanks for playing")
         
     
         
@@ -36,6 +51,7 @@ class MyGameLoader:
     """ just used to put all the room setup in a separate class,
     and if needed, a separate file.
     """
+
     def setup(self):
         bedroom = Room('Bedroom',"Its you and your spouse's bedroom.", {"east": "Hall", "south": "Bathroom"})
         livingroom= Room("Livingroom","Its the livingroom, everyone spends alot of time here.\n The bird stays in here.", {"east": "Front Yard", "south": "Papaw's Room", "West": "Dining Room"})
@@ -52,7 +68,7 @@ class MyGameLoader:
         backyard= Room('Back Yard',"Its the back yard, the shed and shelter are here.", {"east":"Side Yard","north":"Shed", "south":"Tornado Shelter"})
         shed= Room('Shed',"Your dog likes hanging out here.", {"south":"Back Yard"})
         shelter= Room('Tornado Shelter',"This is the only thing that will protech you and yours from a tornado.", {"north":"Back Yard"})
-        stairs = Room('Stairs',"These stairs go all the way up the house into the attic...or you can get off at the second floor.", {"south":"Dining Room", "north":"Attic"})
+        stairs = Room('Stairs',"These stairs go all the way up the house into the attic...or you can get off at the second floor.", {"south":"Dining Room", "north":"Attic","east":"Hall"})
 
         
         # Place rooms in a dictionary.
@@ -75,38 +91,38 @@ class MyGameLoader:
                     stairs.name: stairs}
         
         # Add some items to the rooms
-        shelter_key = Item("Shelter Key", "Its the key that unlocks the shelter.")
+        shelter_key = Item("key", "Its the key that unlocks the shelter.")
         attic.addItem(shelter_key)
-        oxygen_tank = Item("Oxygen Tanks", "Its Nana's oxygen tanks, she can't go anywhere without them.")
+        oxygen_tank = Item("oxygen", "Its Nana's oxygen tanks, she can't go anywhere without them.")
         livingroom.addItem(oxygen_tank)
-        blanket = Item("Child's Blanket", "They won't go anywhere without it when sleepy.")
+        blanket = Item("blankey", "They won't go anywhere without it when sleepy.")
         nanaroom.addItem(blanket)
-        leash = Item("Dog's Leash", "Its the dog's leash. Its the only way to get them to follow you when they're scared.")
+        leash = Item("leash", "Its the dog's leash. Its the only way to get them to follow you when they're scared.")
         kitchen.addItem(leash)
-        cat = Item("Cat", "The family's cat. Likes to sleep on the dining room chairs.")
+        cat = Item("cat", "The family's cat. Likes to sleep on the dining room chairs.")
         diningroom.addItem(cat)
         snake = Item("snake", "Your pet snake, Snape. It doesn't mind being moved.")
         bedroom.addItem(snake)
-        bird = Item("Bird", "A pretty bird, that the cat tries to eat.")
+        bird = Item("bird", "A pretty bird, that the cat tries to eat.")
         frontyard.addItem(bird)
         key = Item("key","key")
-        bedroom.addItem(key)
+        backyard.addItem(key)
         
         #getting up the gameplay startup information
-        print('_'*55,'\n\n','/_'*5,"Welecome to the Tornado Game!", '_\\'*5, '_'*55,'\n')
-        #time.sleep(1)
+        print('_'*55,'\n\n','/_'*5,"Welecome to the Tornado Game!", '_\\'*5,'\n', '_'*55,'\n')
+        # time.sleep(1)
         print("You wake up in your bedroom. Its noon, but dark out.\n")
-        #time.sleep(2)
+        # time.sleep(2)
         print("You look out the window and its just very cloudy...and windy...\n")
-        #time.sleep(2)
+        # time.sleep(2)
         print("BEEP BEEEP BEEEEEP BEEP\n")
-        #time.sleep(2)
+        # time.sleep(2)
         print("You look at your phone, its a important weather alert...\n") 
-        #time.sleep(3)
+        # time.sleep(3)
         print("         THERE'S A TORNADO COMING AT YOU!\n\n      You need to get to the storm shelter!\n\n")
-        #time.sleep(3)
+        # time.sleep(3)
         print('_'*55,'\n')
-        #time.sleep(3)
+        # time.sleep(3)
         return rooms 
         
         
