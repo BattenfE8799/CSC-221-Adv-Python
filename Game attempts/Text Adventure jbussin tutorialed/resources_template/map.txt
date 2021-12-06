@@ -1,0 +1,5 @@
+empty	empty	empty	empty	peg	empty	empty	empty	empty
+empty	empty	empty	peg	empty	peg	empty	empty	empty
+empty	empty	peg	empty	peg	empty	peg	empty	empty
+empty	peg	empty	peg	empty		empty	peg	empty
+peg	empty	peg	empty	peg	empty	peg	empty	peg
