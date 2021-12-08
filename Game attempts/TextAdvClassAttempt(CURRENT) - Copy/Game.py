@@ -2,8 +2,8 @@
 # Text Adventure
 # norrisa
 # 10/1/21
-from Room import Room, Door
-from Container import Item, Player
+from Room import Room, Door, Player
+from Item import Item
 import time
 
 """
