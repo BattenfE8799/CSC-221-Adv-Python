@@ -4,8 +4,30 @@
 #
 # we moved using a dictionary so we can easily
 # do name lookups
-from Item import Item
+
 # import Game
+class BaseItem:
+    """
+    Items are found in rooms, or in the player inventory.
+    (Possibly we'll change that to being found in Container objects?)
+     
+    They may be used to solve puzzles, give points to score, etc.
+    """
+     
+    def __init__(self, name, description):
+         self.name = name
+         self.description = description
+         
+    def __str__(self):
+        return self.name + " : " + self.description
+        
+class Item(BaseItem):
+    """ inherits from base Item, to create items"""
+    pass
+
+
+
+
 class Container(Item):
     """ This class only handles collections of Items. """
     
@@ -13,33 +35,7 @@ class Container(Item):
         super().__init__(name, description)
         self.contents = []
         
-    # def add(self, item):
-    #     self.contents.append(item)
-        
-    # def remove(self, item):
-    #     if item in self.contents:
-    #         self.contents.remove(item)
-    #         # remove the item from the dictionary
-    #         # del self.contents[item.name]
-    
-    # def give_item(self, item):
-    #     """gives the npc an item"""
-    #     if item in Game.player.contents():
-    #         self.contents.append(item)
-    #         Game.player.contents.remove(item)
-    #         print("You pick up the ",item,".")
-    #     else:
-    #         print("You can't see any", item, "here.")
-            
-    # def get_items(self, item):
-    #     if item in self.here.contents:
-    #         self.contents.remove(item)
-    #         Game.player.contents.append(item)
-    
-    # def moveItemTo(self, item, destination):
-        
-    #     destination.append(item)
-    #     self.remove(item)
+
 
     def list_contents(self):
         """prints items from the dictionary"""
@@ -53,15 +49,7 @@ class Container(Item):
             return text
     
         
-    # i turned it from dictionary to list
-    # def listContents(self):
-    #     text = ""
-    #     for key in self.contents:
-    #         text += key 
-    #         text += " : " 
-    #         text += self.contents[key].description
-    #         text += "\n"
-    #     return text
+
   
     def contains(self, itemName):
         """ quick way to check if item is present. """
@@ -69,17 +57,23 @@ class Container(Item):
             return True
         else:
             return False
-        # # keys() gives us a list of names of items present
-        # itemNameList = []
-        # for itemName in self.contents.keys():
-        #     itemNameList.append(itemName)
-        # print(itemNameList)
-        # itemNameList = list(self.contents.keys())
-        # #print(itemNameList)
-        # if itemName in itemNameList:
-        #     return True
-        # else:
-        #     return False
+
+class Player(Container):
+    """
+    Any data relating to the player himself should go in the 
+    Player class.
+    """
+    
+    def __init__(self, name, description):
+        super().__init__(name, description)
+        self.loc = None # what room is the player in?
+        self.contents = [] # because we're also a container
+        self.win = False
+        self.partial_win = False
+        self.is_alive = True
+        
+    def __str__(self):
+        pass
 
  
         

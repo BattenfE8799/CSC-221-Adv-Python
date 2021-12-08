@@ -3,8 +3,7 @@
 # Elizabeth Battenfield
 # 10/18/21
 
-from Container import Container
-import Item
+from Container import Container, Item, Player
 
 class Room(Container):
     """
@@ -16,10 +15,13 @@ class Room(Container):
     def __init__(self, name, description, exits):
         super().__init__(name, description)
         self.exits = exits # First pass at items in rooms
+        self.door = None
+        self.lockedexit = None
 
     def __str__(self):
         """ contains the name, description, and exits in a human-readable fashion"""
         #adds name and description
+
         
         # text = '\n'+ self.name + ":" + "\n"
         # text += self.description + "\n\n" + "Exits: \n"
@@ -35,11 +37,14 @@ class Room(Container):
         text += "\nIn this room are: \n"
         # f'{fName:<10s}{" ":4}{lName:<10s}
         if len(self.contents) == 0:
-            text += "Nothing you need in here."
+            text += "\nNothing you need in here."
         else:
             listcontents = self.list_contents()
             text += listcontents
-            
+        if self.door != None:
+            text += "\n\nThere is a door here to the: " + self.lockedexit + "\n"
+            text += self.door.name + " "
+            text += self.door.description
         return text
 
  #   def __repr__(self):  # we're not using this yet
@@ -70,76 +75,39 @@ class Room(Container):
         if item in self.contents:
             self.remove(item)
     
+    def addDoor(self, door, lockedexit):
+        self.door = door
+        self.lockedexit = lockedexit
+        
+class Door():
+    def __init__(self, name, description, state, locked):
+        self.name = name
+        self.description = description
+        self.state = state
+        self.locked = locked
+    def look(self):
+        print("\nDescription: " + str(self.description))
+        print("\nLocked: " + str(self.locked))
+    def open(self):
+        self.state = 1
+        self.description = "The door is open."
+    def close(self):
+        self.state = 0
+        self.description = "The door is closed."
+    def lock(self):
+        self.locked = True
+        print("The door is locked.")
+    def unlock(self):
+        self.locked = False
+        print("The door is unlocked.")
+    def exits(self):
+        if self.locked == False:
+            if self.state == 1:
+                #door is passable
+                return True
+            else:
+                print("Door is closed.")
+                return False
+        else:
+            return False
 
-
-
-def main():
-
-    #Currently used for testing.
-    #TODO: uimplement doctests. 
-    bedroom = Room( "Bedroom", 
-                   "This is a simple bedroom with a comfy bed.",
-                   { "South": "Living Room"} )
-    
-    print(bedroom)
-    
-    livingRoom = Room ( "Living Room",
-                       "A simple living room with a couch and TV.",
-                       { "North" : "Bedroom" ,
-                         "South" : "Front Yard",
-                         "East"  : "Kitchen"} )
-    print(livingRoom)
-    
-    frontYard = Room ( "Front Yard",
-                       "A tidy front yard with lots of flowers.",
-                       { "North" : "Living Room" } )
-    print(frontYard)
-    
-    kitchen = Room ( "Kitchen",
-                       "A kitchen themed with roosters...they're everywhere.",
-                       { "North" : "Back Yard",
-                         "East"  : "Living Room"} )
-    print(kitchen)
-    
-    backYard = Room ( "Back Yard",
-                       "A messy back yard, it needs to be mowed.",
-                       { "South" : "Kitchen" } )
-    print(backYard)    
-    
-    
-    
-    
-    
-    # Place rooms in a dictionary.
-    # (Game will handle this in the full version)
-    roomDict = { bedroom.name: bedroom, 
-                livingRoom.name: livingRoom,
-                frontYard.name: frontYard,
-                kitchen.name: kitchen,
-                backYard.name: backYard}
-    # Test out items
-    key = Item.Item("key", "It's a bit rusty.")
-    sword = Item.Item("sword", "It's very shiny.")
-    bedroom.addItem(key)
-    livingRoom.addItem(sword)
-    #print(loc.contents) # just dump the list
-    
-    # Test out movement
-    loc = bedroom
-    print("Starting room:")
-    loc.describe()
-
-    print ("Heading South...")
-    loc = roomDict[loc.exits["South"]] # find room to South, go there
-    loc.describe()
-    
-    print ("Heading North...")
-    loc = roomDict[loc.exits["North"]] # find room to North, go there
-    loc.describe()
-    
-
-    
-    
-
-if __name__ == "__main__":
-    main()

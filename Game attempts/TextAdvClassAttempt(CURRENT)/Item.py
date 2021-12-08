@@ -1,7 +1,7 @@
 # Item class
 
 invintory = ['key'] #global because I can't figure it out rn
-
+from Container import Container
 class BaseItem:
     """
     Items are found in rooms, or in the player inventory.
@@ -18,67 +18,47 @@ class BaseItem:
         return self.name + " : " + self.description
         
 class Item(BaseItem):
-    """ ingerits from base Item, to create items"""
+    """ inherits from base Item, to create items"""
     pass
 
-class Doors(BaseItem):
-    """ Creates doors and gives them the locked attribtute. also has lock and unlock methods"""
-    def __init__(self, iname, idescription, is_locked):
-        super().__init__(iname, idescription)   #sends to/from parent class
-        
-        #flags whether or not its locked
-        self.is_locked = is_locked
+class Player(Container):
+    """
+    Any data relating to the player himself should go in the 
+    Player class.
+    """
+    
+    def __init__(self, name, description):
+        super().__init__(name, description)
+        self.loc = None # what room is the player in?
+        self.contents = [] # because we're also a container
+        self.win = False
+        self.partial_win = False
+        self.is_alive = True
         
     def __str__(self):
-        if self.is_locked == True:
-            return f'{self.name} Door:\n {self.description}\n It is locked.\n'
-        elif self.is_locked == False:
-            return f'{self.name} Door:\n {self.description}\n It is unlocked.\n'
-   
-    def get_is_locked(self):
-        return self.is_locked
-    def set_is_locked(self, lock):
-        self.is_locked = lock
-    
-    def unlock_door(self):
-        try:
-            if self.is_locked == True:
-                try:
-                    if 'key' in invintory:
-                        self.set_is_locked(False)
-                except: 
-                    print("...You can't unlock a door without a key...")
-        except:
-            print("Why would you try to unlock an unlocked door...")
-    
-    def lock_door(self):
-        try:
-            if self.is_locked == False:
-                self.set_is_locked(True)
-        except:
-            print("You can't lock a locked door..")
+        pass
 
      
 
-# Test code
-def main():
-    """tests base items    """
-    print("\nStart of Base Items test:\n***************")
-    pencil = BaseItem('Pencil', 'Wooden and sharp.')
-    print(pencil)
-    eraser = BaseItem('Eraser', 'Rubbery and blue')
-    print(eraser)
-    print("End of Base Items test\n***************")
+# # Test code
+# def main():
+#     """tests base items    """
+#     print("\nStart of Base Items test:\n***************")
+#     pencil = BaseItem('Pencil', 'Wooden and sharp.')
+#     print(pencil)
+#     eraser = BaseItem('Eraser', 'Rubbery and blue')
+#     print(eraser)
+#     print("End of Base Items test\n***************")
         
-    """"test doors and the locking and unlocking function of them"""
-    print("\nStarting: Door Class test\n***************")
-    heart_door = Doors('Heart','Its a door in the shape of a heart.', True)
-    print(heart_door)
-    heart_door.unlock_door() 
-    print(heart_door)
-    heart_door.lock_door()
-    print(heart_door)
-    print("End of: Door class test\n***************")
+#     """"test doors and the locking and unlocking function of them"""
+#     print("\nStarting: Door Class test\n***************")
+#     heart_door = Doors('Heart','Its a door in the shape of a heart.', True)
+#     print(heart_door)
+#     heart_door.unlock_door() 
+#     print(heart_door)
+#     heart_door.lock_door()
+#     print(heart_door)
+#     print("End of: Door class test\n***************")
         
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

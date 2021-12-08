@@ -1,6 +1,5 @@
 # Player class
 from Container import Container
-import Game
 class Player(Container):
     """
     Any data relating to the player himself should go in the 
@@ -16,15 +15,16 @@ class Player(Container):
         self.is_alive = True
         
     def __str__(self):
-        itemlist = []
-        for item in self.contents:
-            itemlist.append(item)
-        if itemlist == []:
-            return f"It's you...\n You have nothing with you.\n You're in your {self.loc}"
-        else:    
-            return f"It's you...\n You have: {itemlist}.\n You're in your {self.loc}"
+        pass
+        #itemlist = []
+        # for item in self.contents:
+        #     itemlist.append(item)
+        # if itemlist == []:
+        #     return f"It's you...\n You have nothing with you.\n You're in your {self.loc}"
+        # else:    
+        #     return f"It's you...\n You have: {itemlist}.\n You're in your {self.loc}"
         
-        
+
 
 # def testing():
 #     """tests player class"""
