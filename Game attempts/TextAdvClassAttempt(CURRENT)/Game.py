@@ -57,12 +57,12 @@ class Game:
 
     def setup(self):
         """ sets up the game"""
-        bedroom = Room('Bedroom',"Its you and your spouse's bedroom.", {"east": "Hall", "south": "Bathroom"})
-        livingroom= Room("Living Room","Its the livingroom, everyone spends alot of time here.\n The bird stays in here.", {  "south": "Papaw's Room", "west": "Dining Room"})
+        bedroom = Room('Bedroom',"Its you and your spouse's bedroom.", {"west": "Hall", "south": "Bathroom"})
+        livingroom= Room("Living Room","Its the livingroom, everyone spends alot of time here.\n.", {"east": "Dining Room"})
         # papawroom= Room("Papaw's Room", "Its Papaw's bedroom.", {"north": "Living Room"})
-        diningroom= Room('Dining Room',"Its where you all eat meals together.\n The cat likes sitting in the chairs.", {"south": "Stairs", "east": "Kitchen"})
-        kitchen= Room('Kitchen',"It's where the family cooks their meals. Leads to the back yard.", {"east":"Dining Room","west":"Back Yard"})
-        hall= Room('Hall',"Its a hallway.", {"east":"Child's Room","north":"Nana's Room","west":"Bedroom","south":"Stairs"})
+        diningroom= Room('Dining Room',"Its where you all eat meals together.\n The cat likes sitting in the chairs.", {"west":"Living Room", "south": "Stairs", "east": "Kitchen"})
+        kitchen= Room('Kitchen',"It's where the family cooks their meals. Leads to the back yard.", {"west":"Dining Room","east":"Back Yard"})
+        hall= Room('Hall',"Its a hallway.", {"east":"Bedroom","south":"Stairs"})
         # nanaroom= Room("Nana's Room","It's Nana's bedroom. Child tends to spend time with her in here.", {"south":"Hall"})
         # childroom= Room("Child's Room","Its your youngest's bedroom. Your pet snake lives in here.", {"west":"Hall"})
         bathroom= Room("Bathroom","Its you and your spouse's bathroom.", {"north":"Bedroom"})
@@ -71,7 +71,7 @@ class Game:
         shed= Room('Shed',"Your dog likes hanging out here.", {"south":"Back Yard"})
         shelter= Room('Tornado Shelter',"This is the only thing that will protech you and yours from a tornado.", {"out":"Back Yard"})
         # shelterDoor= Room('Shelter Door',"The door to the shelter, its locked. You need a key.", {"in":"Tornado Shelter","out":"Back Yard"})
-        stairs = Room('Stairs',"These stairs go all the way up the house into the attic...or you can get off at the second floor.", {"south":"Dining Room", "east":"Hall"})
+        stairs = Room('Stairs',"Stairs to travel between the first and second floors.", {"down":"Dining Room", "up":"Hall"})
 
         
         # Place rooms in a dictionary.
@@ -95,7 +95,7 @@ class Game:
         
         # Add some items to the rooms
         shelter_key = Item("key", "Its the key that unlocks the shelter.")
-        backyard.addItem(shelter_key)
+        shed.addItem(shelter_key)
         #oxygen_tank = Item("oxygen", "Its Nana's oxygen tanks, she can't go anywhere without them.")
         #livingroom.addItem(oxygen_tank)
         #blanket = Item("blankey", "They won't go anywhere without it when sleepy.")
@@ -106,17 +106,32 @@ class Game:
         diningroom.addItem(cat)
         snake = Item("snake", "Your pet snake, Snape. It doesn't mind being moved.")
         bedroom.addItem(snake)
-        
-        self.items = [shelter_key]
+        dog = Item("dog","Your pet dog. Its very scared.")
+        backyard.addItem(dog)
+        self.items = shelter_key
         
         #bird = Item("bird", "A pretty bird, that the cat tries to eat.")
         
         #add some containers
         
         #door setup
-        frontDoor = Door("FrontDoor", "The door to the front yard is blocked. You can't go that way.", 0, True)
-        bathroomDoor = Door("BathroomDoor","The door to the bathroom is closed.",0,False)
-        shelterDoor = Door("ShelterDoor", "The door to the storm shelter is closed.",0,True)
+        frontDoor = Door("FrontDoor", "The door to the front yard is blocked on the outside. You can't go that way.")
+        frontDoor.locked = True
+        frontDoor.state = 1
+        livingroom.addDoor(frontDoor, "west")
+        backDoor = Door("BackDoor", "The back door.")
+        backDoor.locked = False
+        backDoor.state = 1
+        kitchen.addDoor(backDoor, "east")        
+        
+        bathroomDoor = Door("BathroomDoor","The door to the bathroom.")
+        bathroomDoor.locked = False
+        bathroomDoor.state = 1
+        bedroom.addDoor(bathroomDoor, "south")
+        bathroom.addDoor(bathroomDoor, "north")
+        shelterDoor = Door("ShelterDoor", "The door to the storm shelter.")
+        shelterDoor.locked = True
+        shelterDoor.state = 1
         backyard.addDoor(shelterDoor, "south")
         
         #getting up the gameplay startup information
@@ -130,7 +145,9 @@ class Game:
         time.sleep(2)
         print("You look at your phone, its a important weather alert...\n") 
         time.sleep(2)
-        print("         THERE'S A TORNADO COMING AT YOU!\n\n      You need to get to the storm shelter!\n\n")
+        print("         THERE'S A TORNADO COMING AT YOU!\n\n     ") 
+        time.sleep(1)
+        print("         You need to get to the storm shelter!\n\n")
         time.sleep(2)
         print('_'*55,'\n')
         time.sleep(2) 
@@ -148,15 +165,23 @@ class Game:
         """ loop(): the main game loop.
             Continues until the user quits. 
         """
-        
+        turn_counter = 1
         player = self.player
         player.contents = []
         while player.is_alive == True:
+            turn_counter += 1
             if player.loc == self.rooms["Tornado Shelter"]:
+                break
+            if turn_counter == 15:
+                print("\n\nSOUNDS LIKE A TRAIN IS COMING!\n\n I better hurry!\n")
+            if turn_counter == 20:
                 break
             # self.roomAction()
             self.playerAction()
-        self.ending()        
+        if turn_counter >= 20:
+            self.ended()
+        else:
+            self.ending()        
 
 
     def ending(self):
@@ -177,6 +202,7 @@ class Game:
         time.sleep(2)
         print(" You died...")
         print('_'*55,'\n')
+        input("Press Enter to end the program...")
         # time.sleep(2) 
         # invintory = self.player.list_contents()
         # rcontents = self.rooms['Tornado Shelter'].list_contents()
@@ -192,7 +218,17 @@ class Game:
         # elif self.player.win == True:
         #     print(f'You Won! Eveyone you love is safe from the tornado! Including your pets!\n It took you {self.turns_counted} turns to end the game!')
         # pass
-    
+        
+    def ended(self):
+        """Didn't make it to shelter"""
+        print("The sky turns black and you hear nothing at all....\n It's eerily quiet.\n")
+        time.sleep(2)    
+        print("WHOOOOOOSSSHHH")
+        time.sleep(2)
+        print("The tornado has come. It picked you up and threw you.")
+        time.sleep(2)
+        print("You died. The end.")
+        input("Press Enter to end the program...")
         
     def end(self):
         pass
@@ -324,7 +360,23 @@ class Game:
                 
                 
     def commandUnlock(self, door):
-        pass
+        #trying again, with item a callable object
+        for thing in self.player.contents:
+            if thing == self.items:
+                self.here.door.locked = False
+                print("The door is unlocked.")
+        
+        #trying again
+        # item = None
+        # itemName = self.items
+        # print("Item:",itemName)
+        # for thing in self.player.contents:
+        #     print(self.player.contents)
+        #     print("check1:")
+        #     if thing == itemName:
+        #         print("Check2:")
+        #         item = thing
+        #         print(item)
         #error for this one is AttributeError: 'str' object has no attribute 'unlock' line 319
         # item = None
         # itemName = 'key'

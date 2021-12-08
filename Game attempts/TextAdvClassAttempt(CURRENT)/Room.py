@@ -25,7 +25,7 @@ class Room(Container):
         
         # text = '\n'+ self.name + ":" + "\n"
         # text += self.description + "\n\n" + "Exits: \n"
-        text = f'\n{self.name}:\n{self.description}\n\nExits from room:\n'
+        text = f'\n{self.name}:\n{self.description}\n\nExits from room:  \n'
         #adds exits
         # text = ''
         exitList = self.exits.keys() # this gives us a list of all directions ipresent in exits
@@ -34,7 +34,7 @@ class Room(Container):
             text += ": " + self.exits[direction]  # prints in format "North: Living Room", etc.
             text += "\n"
         # adds items in room if there are any
-        text += "\nIn this room are: \n"
+        text += "\nIn this room:  \n            "
         # f'{fName:<10s}{" ":4}{lName:<10s}
         if len(self.contents) == 0:
             text += "\nNothing you need in here."
@@ -42,9 +42,8 @@ class Room(Container):
             listcontents = self.list_contents()
             text += listcontents
         if self.door != None:
-            text += "\n\nThere is a door here to the: " + self.lockedexit + "\n"
-            text += self.door.name + " "
-            text += self.door.description
+            text += "\nThere is a door here to the " + self.lockedexit + ".\n"
+            text += self.door.__str__()
         return text
 
  #   def __repr__(self):  # we're not using this yet
@@ -80,12 +79,25 @@ class Room(Container):
         self.lockedexit = lockedexit
         
 class Door():
-    def __init__(self, name, description, state, locked):
+    def __init__(self, name, description):
         self.name = name
         self.description = description
-        self.state = state
-        self.locked = locked
+        self.state = 0
+        self.locked = False
+    
+    def __str__(self):
+        if self.locked == True:
+            lock = 'The door is locked.'
+        elif self.locked == False:
+            lock = 'The door is unlocked.'
+        if self.state == 0:
+            stat = 'The door is open.'
+        elif self.state == 1:
+            stat = 'The door is closed.'
+        text = f"\n{self.name}: {self.description} \n{lock} {stat}"
+        return text
     def look(self):
+        # text = f"\nDescription: {self.description}\n \nLocked: self.locked."
         print("\nDescription: " + str(self.description))
         print("\nLocked: " + str(self.locked))
     def open(self):
