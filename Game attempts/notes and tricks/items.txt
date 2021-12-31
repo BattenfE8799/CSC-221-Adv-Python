@@ -1,0 +1,4 @@
+Key; It's a key. It unlocks doors.; 0
+Health Potion; It heals you.; 20
+Mana Potion; It fills your mana pool.; 30
+sword; it hurts enemies; 20
