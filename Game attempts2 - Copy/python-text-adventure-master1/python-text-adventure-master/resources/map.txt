@@ -1,0 +1,4 @@
+Shelter	Byard	Shed						
+	Syard		Kitchen			ChildR		
+	Fyard	LivingR	DiningR	Stairs	Hall	BedR	StartingRoom	
+		PapawR		Attic		NanaR		

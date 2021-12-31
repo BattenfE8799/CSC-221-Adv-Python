@@ -1,0 +1,2 @@
+
+Bedroom; it has a bed; {'east': '<bathroom'}; *['Key', 'Health Potion']* 

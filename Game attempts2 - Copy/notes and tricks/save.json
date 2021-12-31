@@ -1,0 +1,7 @@
+{"Game Title": "Game title goes here"},
+{ "Intro": "Intro for game goes here"},
+{"Ending": "Ending of game goes here"},
+{ "rooms": [ room_name = Room("name":'Room', "description": "Room description.", "Contents": ["Key"], "Exits":{"direction": "roomname"}, "door": Null, "lockedexit": Null)]},
+{ "items": [ item_name = Item("name": "key", "description":"Its the key that unlocks the shelter.")]},
+{ "player": ["name":"Player", "description": "Its you.", "contents": ["item" ], "location": "roomname", "win": false, "partial_win": false, "is_alive" : true},
+{ "Doors": ["name": "testdoor", "description": "door for testing purposes", "state": 0, "locked": false]}
