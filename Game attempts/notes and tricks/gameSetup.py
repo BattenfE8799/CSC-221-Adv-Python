@@ -55,35 +55,44 @@ class Room(Container):
     door: str = None
     lockedexit: str = None
     
-    def look(self):
-      """ contains the name, description, and exits in a human-readable fashion"""
-      text = f'\n{self.name}:\n{self.description}\n\nExits from room:\n'
-      #adds exits
-      # text = ''
-      exitList = self.exits.keys() # this gives us a list of all directions ipresent in exits
-      for direction in exitList:
-          text += direction                     # North, South, etc. 
-          text += ": " + self.exits[direction]  # prints in format "North: Living Room", etc.
-          text += "\n"
-      # adds items in room if there are any
-      text += "\nIn this room are: \n"
-      # f'{fName:<10s}{" ":4}{lName:<10s}
-      if len(self.contents) == 0:
-          text += "\nNothing you need in here."
-      else:
-          listcontents = self.list_contents()
-          text += listcontents
-      if self.door != None:
-          text += "\n\nThere is a door here to the: " + self.lockedexit + "\n"
-          text += self.door.name + " "
-          text += self.door.description
-      return text
+    def __str__(self):
+        """ contains the name, description, and exits in a human-readable fashion"""
+        text = f'\n{self.name}:\n{self.description}\n\n'
+        text += 'Exits: \n'
+        exitList = self.exits.keys() # this gives us a list of all directions ipresent in exits
+        for direction in exitList:
+            text += direction                     # North, South, etc. 
+            text += ": " + self.exits[direction]  # prints in format "North: Living Room", etc.
+            text += "\n"
+        return text
   
+    def describe(self):
+        """ print full room description. """
+        print(self)
+    
+    def look(self):
+        """looks at items in room"""
+        print(self)
+        
+        text = "\nIn this room are: \n"
+        if self.contents == []:
+             text += "\nNothing you need in here."
+        else:
+            print(text)
+            for item in self.contents:
+                print(item)
+            
+        if self.door != None:
+            text = "\nThere is a door here to the: " + self.lockedexit + "\n"
+            text += self.door.name + " "
+            text += self.door.description
+        print(text)
     
     def addDoor(self, door, lockedexit):
         self.door = door
         self.lockedexit = lockedexit
-
+        
+    
 @dataclass
 class Door(BaseItem):
     name = str
@@ -122,26 +131,41 @@ class Game:
     
     def __init__(self):
         """ Initialize object (with no rooms) """
-        self.rooms = {} # stored in dictionary
+        self.title = "Game Title"
+        self.intro = "Game Intro"
+        self.ending = "Game Ending"
+        self.roomslist = {} # stored in dictionary
         self.items = []
+        self.doors = []
         # Player is currently used to hold current location (loc)
-        self.player = Player("Player","You are the player.") 
+        self.player = Player("Player","You are the player.", 'contents'== []) 
         self.isPlaying = True
         self.isVerbose = True # auto-look on move
         self.end_game = False
     
     
-    def commands():
-        """commands player can choose"""
-        pass
-    
-    def loop():
+    def loop(self):
         """game loop"""
+        turn_counter = 0
+        player = self.player
+        print(self.title)
+        print(self.intro)
+        
+        while player.is_alive == True:
+            win = player.win()
+            if win == True:
+                break
+            turn_counter += 1
+            self.playerAction()
+        self.end()
         pass
+            
+            
     
-    def end():
+    def end(self):
         """ends the game"""
-        pass
+        print(self.ending)
+        exit
     
     def playerAction(self):
         """ Ask user for input, validate it, update the game state. """
@@ -157,7 +181,7 @@ class Game:
             direction = words[1]
             self.commandGo(direction)    
         elif verb == "look":
-            self.here.describe()
+            self.here.look()
         elif verb == "quit":
             self.isPlaying = False
             print("quitting")
@@ -179,8 +203,10 @@ class Game:
         elif verb == 'close':
             door = words[1]
             self.commandClose(door)
-        elif verb == 'i':
+        elif verb == 'inv':
             self.commandInv()
+        elif verb == 'save':
+            self.Save()
         else: # first word is verb
             print("I don't know how to", words[0])
             
@@ -290,6 +316,32 @@ class Game:
     @here.setter
     def here(self, room):
         self.player.location = room
+        
+    def Load(self):
+        with open ('save.json', 'r') as save_file:
+            data = json.load(save_file)
+            self.title = data["Title"]
+            self.intro = data["Intro"]
+            self.ending = data["Ending"]
+            # self.rooms = data["rooms"]
+            # self.items = data["items"]
+            # self.doors = data["doors"]
+            # self.player = data["player"]
+            print("Game Loaded")
+            
+            
+    
+    
+    def Save(self, filename="save.json"):
+        with open (filename, 'w') as f:
+            data = json.load(filename)
+            temp = data["rooms"]
+            y = self
+            temp.append(y)
+            json(data, f, indent = 4)
+
+    
+    
     
 class ItemEncoder(json.JSONEncoder):
     """ encodes items into json file"""
@@ -298,37 +350,12 @@ class ItemEncoder(json.JSONEncoder):
             return {'name': i.name, 'description': i.description,}
         return super().default()
 
-def Load():
-    save_file = 'save.json'
-    GameTitle = ""
-    Intro = ""
-    Ending = ""
-    rooms = {}
-    items = []
-    rooms = {}
-    player = Player
-    doors = []
-    
 
-    
-    with open (save_file, 'r') as sf:
-        save = json.loads(sf)
-        print(save)
-
-
-def Save(rooms, items, player, filename="save.json"):
-    print(rooms, items, player)
-    with open (filename, 'w') as f:
-        data = json.load(filename)
-        temp = data["rooms"]
-        y = rooms
-        temp.append(y)
-        json(data, f, indent = 4)
     
 def main():
     print("Starting game -- enter your command.")
     game = Game()
-    game.setup()
+    game.Load()
     game.loop()
     game.end()
         
